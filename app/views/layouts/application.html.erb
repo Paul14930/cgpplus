@@ -2,14 +2,24 @@
 <html>
   <head>
     <title>Cgpplus</title>
+<%# pour flowbite %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.turbo.min.js"></script>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
 
   <body>
-    <%= yield %>
+   <%= render 'layouts/navbar' %>
+
+    <%# <main class="container mx-auto mt-28 px-5 flex"> %>
+      <%= yield %>
+    </main>
+
+     <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
   </body>
 </html>
