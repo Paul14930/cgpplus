@@ -1,0 +1,9 @@
+<h1>Liste des CGP</h1>
+<ul>
+  <% @cgps.each do |cgp| %>
+    <li>
+      <%= link_to "#{cgp.nom} #{cgp.prenom}", cgp_path(cgp) %>
+      <!-- Ajoutez d'autres détails que vous souhaitez afficher -->
+    </li>
+  <% end %>
+</ul>
