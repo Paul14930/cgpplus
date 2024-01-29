@@ -6,24 +6,30 @@ class ClientsController < ApplicationController
 
   def show
     @client = Client.find(params[:id])
+    @cgp = @client.cgp
+    @entreprises = @client.entreprises
   end
 
   def new
-    @client = Client.new
+    @cgp = Cgp.find(params[:cgp_id])
+    @client = @cgp.clients.build
   end
+
 
   def edit
     @client = Client.find(params[:id])
   end
 
   def create
-    @client = Client.new(client_params)
+    @cgp = Cgp.find(params[:cgp_id])
+    @client = @cgp.clients.build(client_params)
     if @client.save
-      redirect_to @client
+      redirect_to cgp_client_path(@cgp, @client)
     else
       render :new
     end
   end
+
 
   def update
     @client = Client.find(params[:id])
@@ -42,6 +48,6 @@ class ClientsController < ApplicationController
 
   private
     def client_params
-      params.require(:client).permit(:nom, :prenom, :date_naissance, :situation_matrimoniale, :regime_matrimonial, :presence_enfants, :civilite, :email, :telephone_principal, :telephone_secondaire, :adresse, :code_postal, :ville)
+      params.require(:client).permit(:cgp_id, :nom, :prenom, :date_naissance, :situation_matrimoniale, :regime_matrimonial, :presence_enfants, :civilite, :email, :telephone_principal, :telephone_secondaire, :adresse, :code_postal, :ville)
     end
 end

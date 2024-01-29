@@ -1,0 +1,52 @@
+<%= form_with(model: [@cgp, @client, @entreprise], local: true) do |form| %>
+  <%# Afficher les erreurs ici, si nécessaire %>
+ <%= form.hidden_field :entreprise_mere_id %>
+
+  <%= form.label :nom %>
+  <%= form.text_field :nom %>
+
+<%= form.label :forme_juridique %>
+<%= form.select :forme_juridique, options_for_select([
+  'Société par actions simplifiée (SAS)',
+  'Société à responsabilité limitée (SARL)',
+  'Entreprise individuelle à responsabilité limitée (EIRL)',
+  'Société par actions simplifiée unipersonnelle (SASU)',
+  'Entreprise individuelle (EI)',
+  'Société anonyme (SA)',
+  'Société civile immobilière (SCI)',
+  'Société en nom collectif (SNC)',
+  'Société en commandite simple (SCS)',
+  'Société en commandite par actions (SCA)',
+  'Société en participation (SEP)',
+
+]), { include_blank: 'Sélectionnez' } %>
+
+
+  <%= form.label :activite %>
+  <%= form.text_field :activite %>
+
+  <%= form.label :capital_social %>
+  <%= form.number_field :capital_social %>
+
+  <%= form.label :valeur_estimee %>
+  <%= form.number_field :valeur_estimee %>
+
+  <%= form.label :chiffre_affaires %>
+  <%= form.number_field :chiffre_affaires %>
+
+  <%= form.label :resultat_net %>
+  <%= form.number_field :resultat_net %>
+
+  <%= form.label :date_creation %>
+  <%= form.date_select :date_creation %>
+
+  <%= form.label :date_acquisition %>
+  <%= form.date_select :date_acquisition %>
+
+ <%= form.label :taux_detention %>
+  <%= form.date_select :taux_detention %>
+
+  <%= form.hidden_field :client_id, value: @client.id %>
+
+  <%= form.submit 'Enregistrer l\'entreprise' %>
+<% end %>

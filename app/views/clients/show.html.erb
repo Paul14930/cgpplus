@@ -1,0 +1,128 @@
+<h1>Informations du Client</h1>
+
+<p>
+  <strong>Nom :</strong>
+  <%= @client.nom %>
+</p>
+
+<p>
+  <strong>Prénom :</strong>
+  <%= @client.prenom %>
+</p>
+
+<p>
+  <strong>Date de Naissance :</strong>
+  <%= @client.date_naissance %>
+</p>
+
+<p>
+  <strong>Situation Matrimoniale :</strong>
+  <%= @client.situation_matrimoniale %>
+</p>
+
+<p>
+  <strong>Régime Matrimonial :</strong>
+  <%= @client.regime_matrimonial %>
+</p>
+
+<p>
+  <strong>Présence Enfants :</strong>
+  <%= @client.presence_enfants ? 'Oui' : 'Non' %>
+</p>
+
+<p>
+  <strong>Civilité :</strong>
+  <%= @client.civilite %>
+</p>
+
+<p>
+  <strong>Email :</strong>
+  <%= @client.email %>
+</p>
+
+<p>
+  <strong>Téléphone Principal :</strong>
+  <%= @client.telephone_principal %>
+</p>
+
+<p>
+  <strong>Téléphone Secondaire :</strong>
+  <%= @client.telephone_secondaire %>
+</p>
+
+<p>
+  <strong>Adresse :</strong>
+  <%= @client.adresse %>
+</p>
+
+<p>
+  <strong>Code Postal :</strong>
+  <%= @client.code_postal %>
+</p>
+
+<p>
+  <strong>Ville :</strong>
+  <%= @client.ville %>
+</p>
+<%= link_to 'Ajouter une entreprise', new_cgp_client_entreprise_path(@cgp, @client) %>
+
+<h2>Entreprises de <%= @client.nom %> <%= @client.prenom %></h2>
+
+<table class="min-w-full leading-normal">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Forme Juridique</th>
+      <th>Activité</th>
+      <th>Capital Social</th>
+      <th>Valeur Estimée</th>
+  
+      <th>Date de Création</th>
+      <th>Date d'Acquisition</th>
+      <th>Taux de Détention</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @entreprises.where(entreprise_mere_id: nil).each do |entreprise| %>
+      <tr>
+        <td><%= entreprise.nom %></td>
+        <td><%= entreprise.forme_juridique %></td>
+        <td><%= entreprise.activite %></td>
+        <td><%= entreprise.capital_social %></td>
+        <td><%= entreprise.valeur_estimee %> € </td>
+        <td><%= entreprise.date_creation %></td>
+        <td><%= entreprise.date_acquisition %></td>
+        <td><%= entreprise.taux_detention %>%</td>
+        <td>
+          <%= link_to 'Éditer', edit_cgp_client_entreprise_path(@cgp, @client, entreprise) %>
+          <%= link_to 'Ajouter une filiale', new_cgp_client_entreprise_path(@cgp, @client, entreprise_mere_id: entreprise.id) %>
+        </td>
+      </tr>
+      <% entreprise.filiales.each do |filiale| %>
+        <tr class="bg-gray-100">
+           <td>
+    <%= filiale.nom %> (Filiale de <%= filiale.entreprise_mere.nom %>)
+  </td>
+          <td><%= filiale.forme_juridique %></td>
+          <td><%= filiale.activite %></td>
+          <td><%= filiale.capital_social %></td>
+          <td><%= filiale.valeur_estimee %> €</td>
+          <td><%= filiale.date_creation %></td>
+          <td><%= filiale.date_acquisition %></td>
+          <td><%= filiale.taux_detention %>%</td>
+          <td>
+            <%= link_to 'Éditer', edit_cgp_client_entreprise_path(@cgp, @client, filiale) %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+
+
+
+<!-- Lien pour éditer et retourner à l'index des clients -->
+<%= link_to 'Modifier', edit_client_path(@client) %> |
+<%= link_to 'Retour à la liste', clients_path %>

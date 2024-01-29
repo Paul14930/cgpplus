@@ -1,0 +1,67 @@
+<%= form_with(model: [@cgp, @client], local: true) do |form| %>
+  <% if @client.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@client.errors.count, "error") %> prevented this client from being saved:</h2>
+      <ul>
+        <% @client.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.label :nom %>
+  <%= form.text_field :nom %>
+
+  <%= form.label :prenom %>
+  <%= form.text_field :prenom %>
+
+  <%= form.label :date_naissance %>
+  <%= form.date_select :date_naissance %>
+
+<%= form.label :situation_matrimoniale %>
+<%= form.select :situation_matrimoniale, options_for_select(['marié', 'célibataire', 'divorcé', 'veuf', 'union libre', 'pacsé']), { include_blank: 'Sélectionnez' } %>
+
+
+<%= form.label :regime_matrimonial %>
+<%= form.select :regime_matrimonial, options_for_select([
+  'Aucun',
+  'Régime légal à compter du 01/02/1966',
+  'Communauté réduite aux acquêts',
+  'Communauté universelle',
+  'Régime légal avant le 01/02/1966',
+  'Communauté de meubles et d'acquêts',
+  'Séparation de biens',
+  'Participation aux acquêts',
+  'Séparation de biens avec société d'acquêts',
+  'Régime optionnel de participation aux acquêts'
+]), { include_blank: 'Sélectionnez' } %>
+
+
+  <%= form.label :presence_enfants %>
+  <%= form.check_box :presence_enfants %>
+
+  <%= form.label :civilite %>
+  <%= form.select :civilite, ['Monsieur', 'Madame', 'Autre'] %>
+
+  <%= form.label :email %>
+  <%= form.email_field :email %>
+
+  <%= form.label :telephone_principal %>
+  <%= form.telephone_field :telephone_principal %>
+
+  <%= form.label :telephone_secondaire %>
+  <%= form.telephone_field :telephone_secondaire %>
+
+  <%= form.label :adresse %>
+  <%= form.text_area :adresse %>
+
+  <%= form.label :code_postal %>
+  <%= form.text_field :code_postal %>
+
+  <%= form.label :ville %>
+  <%= form.text_field :ville %>
+
+
+  <%= form.submit "Enregistrer le client" %>
+<% end %>

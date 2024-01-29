@@ -6,8 +6,15 @@ Rails.application.routes.draw do
   # root "articles#index"
   root 'pages#index'
 
-  resources :clients
-  resources :entreprises
-  resources :cgps, only: [:show, :index]
+  resources :clients do
+    resources :entreprises
+  end
+
+  resources :cgps, only: [:show, :index] do
+    resources :clients do
+    resources :entreprises
+  end
+  end
+
 
 end

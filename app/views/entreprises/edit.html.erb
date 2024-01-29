@@ -1,0 +1,44 @@
+<%= form_with(model: [@cgp, @client, @entreprise], url: cgp_client_entreprise_path(@cgp, @client, @entreprise), local: true) do |form| %>
+  <% if @entreprise.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@entreprise.errors.count, "error") %> prevented this entreprise from being saved:</h2>
+      <ul>
+        <% @entreprise.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.label :nom %>
+  <%= form.text_field :nom %>
+
+  <%= form.label :forme_juridique %>
+  <%= form.text_field :forme_juridique %>
+
+  <%= form.label :activite %>
+  <%= form.text_field :activite %>
+
+  <%= form.label :capital_social %>
+  <%= form.number_field :capital_social %>
+
+  <%= form.label :valeur_estimee %>
+  <%= form.number_field :valeur_estimee %>
+
+  <%= form.label :chiffre_affaires %>
+  <%= form.number_field :chiffre_affaires %>
+
+  <%= form.label :resultat_net %>
+  <%= form.number_field :resultat_net %>
+
+  <%= form.label :date_creation %>
+  <%= form.date_select :date_creation %>
+
+  <%= form.label :date_acquisition %>
+  <%= form.date_select :date_acquisition %>
+
+  <%= form.label :taux_detention %>
+  <%= form.number_field :taux_detention %>
+
+  <%= form.submit "Mettre à jour l'entreprise" %>
+<% end %>
