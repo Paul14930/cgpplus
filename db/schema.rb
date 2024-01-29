@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_29_123514) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_29_161411) do
   create_table "banques", force: :cascade do |t|
     t.string "nom"
     t.string "siret"
@@ -62,6 +62,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_123514) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "taux_detention"
+  end
+
+  create_table "immobiliers", force: :cascade do |t|
+    t.string "designation"
+    t.date "date_acquisition"
+    t.decimal "valeur_acquisition"
+    t.float "taux_detention", default: 100.0
+    t.decimal "valeur_actuelle"
+    t.string "type_detention", default: "pleine propriété"
+    t.string "proprietable_type", null: false
+    t.integer "proprietable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["proprietable_type", "proprietable_id"], name: "index_immobiliers_on_proprietable"
   end
 
   create_table "users", force: :cascade do |t|
