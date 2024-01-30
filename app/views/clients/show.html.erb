@@ -66,6 +66,65 @@
 </p>
 <%= link_to 'Ajouter une entreprise', new_cgp_client_entreprise_path(@cgp, @client) %>
 
+<%= link_to 'Ajouter un bien immobilier pour le client', new_client_immobilier_path(@client), class: 'btn btn-primary' %>
+
+
+
+<h2>Biens immobiliers de <%= @client.nom %> <%= @client.prenom %></h2>
+
+<table class="min-w-full table-auto">
+  <thead class="justify-between">
+    <tr class="bg-gray-800">
+      <th class="px-16 py-2">
+        <span class="text-gray-300">Désignation</span>
+      </th>
+      <th class="px-16 py-2">
+        <span class="text-gray-300">Date d'Acquisition</span>
+      </th>
+      <th class="px-16 py-2">
+        <span class="text-gray-300">Valeur Acquisition</span>
+      </th>
+      <th class="px-16 py-2">
+        <span class="text-gray-300">Taux de Détention (%)</span>
+      </th>
+      <th class="px-16 py-2">
+        <span class="text-gray-300">Valeur Actuelle</span>
+      </th>
+      <th class="px-16 py-2">
+        <span class="text-gray-300">Type de Détention</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody class="bg-gray-200">
+    <% @client.immobiliers.each do |immobilier| %>
+      <tr class="bg-white border-4 border-gray-200">
+        <td class="px-16 py-2 flex flex-row items-center">
+          <%= immobilier.designation %>
+        </td>
+        <td class="px-16 py-2">
+          <%= immobilier.date_acquisition %>
+        </td>
+        <td class="px-16 py-2">
+          <%= immobilier.valeur_acquisition %> €
+        </td>
+        <td class="px-16 py-2">
+          <%= immobilier.taux_detention %>
+        </td>
+        <td class="px-16 py-2">
+          <%= immobilier.valeur_actuelle %> €
+        </td>
+        <td class="px-16 py-2">
+          <%= immobilier.type_detention %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+
+
+
 <h2>Entreprises de <%= @client.nom %> <%= @client.prenom %></h2>
 
 <table class="min-w-full leading-normal">
@@ -76,7 +135,7 @@
       <th>Activité</th>
       <th>Capital Social</th>
       <th>Valeur Estimée</th>
-  
+
       <th>Date de Création</th>
       <th>Date d'Acquisition</th>
       <th>Taux de Détention</th>
@@ -97,8 +156,17 @@
         <td>
           <%= link_to 'Éditer', edit_cgp_client_entreprise_path(@cgp, @client, entreprise) %>
           <%= link_to 'Ajouter une filiale', new_cgp_client_entreprise_path(@cgp, @client, entreprise_mere_id: entreprise.id) %>
+      <%= link_to 'Ajouter un bien immobilier pour l\'entreprise', new_client_immobilier_path(client_id: @client.id, proprietable_type: 'Entreprise', proprietable_id: entreprise.id) %>
+
         </td>
       </tr>
+      <% if entreprise.immobiliers.any? %>
+  <% entreprise.immobiliers.each do |immobilier| %>
+    <tr class="bg-blue-100">
+      <td colspan="8">Bien Immobilier: <%= immobilier.designation %>, Valeur: <%= immobilier.valeur_actuelle %> €</td>
+    </tr>
+  <% end %>
+<% end %>
       <% entreprise.filiales.each do |filiale| %>
         <tr class="bg-gray-100">
            <td>
@@ -113,8 +181,16 @@
           <td><%= filiale.taux_detention %>%</td>
           <td>
             <%= link_to 'Éditer', edit_cgp_client_entreprise_path(@cgp, @client, filiale) %>
+             <%= link_to 'Ajouter un bien immobilier', new_cgp_client_entreprise_immobilier_path(@cgp, @client, filiale) %>
           </td>
         </tr>
+         <% if filiale.immobiliers.any? %>
+    <% filiale.immobiliers.each do |immobilier| %>
+      <tr class="bg-green-100">
+        <td colspan="8">Bien Immobilier: <%= immobilier.designation %>, Valeur: <%= immobilier.valeur_actuelle %> €</td>
+      </tr>
+    <% end %>
+  <% end %>
       <% end %>
     <% end %>
   </tbody>

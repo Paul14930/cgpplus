@@ -7,7 +7,8 @@ class ClientsController < ApplicationController
   def show
     @client = Client.find(params[:id])
     @cgp = @client.cgp
-    @entreprises = @client.entreprises
+    @entreprises = @client.entreprises.includes(:immobiliers)
+
   end
 
   def new

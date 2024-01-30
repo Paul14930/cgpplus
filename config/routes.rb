@@ -8,13 +8,17 @@ Rails.application.routes.draw do
 
   resources :clients do
     resources :entreprises
+    resources :immobiliers
   end
 
   resources :cgps, only: [:show, :index] do
     resources :clients do
-    resources :entreprises
+      resources :entreprises do
+        resources :immobiliers
+      end
+    end
   end
-  end
+
 
 
 end

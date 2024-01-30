@@ -1,0 +1,34 @@
+class ImmobiliersController < ApplicationController
+  def new
+    @client = Client.find(params[:client_id])
+    @immobilier = @client.immobiliers.build
+  end
+
+  def create
+    @proprietable = if params[:proprietable_type] == 'Entreprise'
+                      Entreprise.find(params[:proprietable_id])
+                    else
+                      Client.find(params[:client_id])
+                    end
+
+    @immobilier = @proprietable.immobiliers.build(immobilier_params)
+
+    if @immobilier.save
+      # Redirige vers la page du client associé
+      client = @proprietable.is_a?(Client) ? @proprietable : @proprietable.client
+      redirect_to client_path(client), notice: 'Bien immobilier ajouté avec succès.'
+    else
+      render :new
+    end
+  end
+
+
+
+
+
+  private
+
+  def immobilier_params
+    params.require(:immobilier).permit(:designation, :date_acquisition, :valeur_acquisition, :taux_detention, :valeur_actuelle, :type_detention)
+  end
+end

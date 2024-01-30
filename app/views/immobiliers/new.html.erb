@@ -1,0 +1,44 @@
+<%= form_with(model: [@client, @immobilier], local: true) do |form| %>
+  <% if @immobilier.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@immobilier.errors.count, "error") %> prevented this immobilier from being saved:</h2>
+      <ul>
+        <% @immobilier.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :designation %>
+    <%= form.text_field :designation %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date_acquisition %>
+    <%= form.date_select :date_acquisition %>
+  </div>
+
+  <div class="field">
+    <%= form.label :valeur_acquisition %>
+    <%= form.number_field :valeur_acquisition %>
+  </div>
+
+  <div class="field">
+    <%= form.label :taux_detention, 'Taux de détention (%)' %>
+    <%= form.number_field :taux_detention %>
+  </div>
+
+  <div class="field">
+    <%= form.label :valeur_actuelle %>
+    <%= form.number_field :valeur_actuelle %>
+  </div>
+
+  <div class="field">
+    <%= form.label :type_detention %>
+    <%= form.select :type_detention, ['Pleine propriété', 'Nue-propriété', 'Usufruit'], { include_blank: 'Sélectionnez le type de détention' } %>
+  </div>
+
+  <%= form.submit 'Enregistrer le bien immobilier' %>
+<% end %>
