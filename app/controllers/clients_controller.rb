@@ -9,6 +9,9 @@ class ClientsController < ApplicationController
     @cgp = @client.cgp
     @entreprises = @client.entreprises.includes(:immobiliers)
 
+    # Nouvelle variable pour l'organigramme
+    @organigramme_data = prepare_organigramme_data(@client.entreprises)
+    @immobiliers = @client.immobiliers + Immobilier.where(proprietable: @client.entreprises)
   end
 
   def new
@@ -48,6 +51,18 @@ class ClientsController < ApplicationController
   end
 
   private
+
+  def prepare_organigramme_data(entreprises)
+    entreprises.map do |entreprise|
+      {
+        id: entreprise.id,
+        nom: entreprise.nom,
+        entreprise_mere_id: entreprise.entreprise_mere_id,
+        taux_detention: entreprise.taux_detention,
+        filiales: prepare_organigramme_data(entreprise.filiales)
+      }
+    end
+  end
     def client_params
       params.require(:client).permit(:cgp_id, :nom, :prenom, :date_naissance, :situation_matrimoniale, :regime_matrimonial, :presence_enfants, :civilite, :email, :telephone_principal, :telephone_secondaire, :adresse, :code_postal, :ville)
     end

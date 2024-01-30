@@ -70,7 +70,8 @@
 
 <%= link_to 'Ajouter un bien immobilier pour le client', new_client_immobilier_path(@client), class: 'inline-block px-6 py-2 text-white font-bold bg-orange-500 hover:bg-orange-700 rounded' %>
 
-
+<div id="organigramme" ></div>
+ <!-- Div pour l'organigramme -->
 
 <h2 class="text-4xl font-bold text-gray-800 mt-6 mb-4">Biens immobiliers de <%= @client.nom %> <%= @client.prenom %></h2>
 
@@ -256,4 +257,67 @@
 </table>
 </div>
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+<script type="text/javascript">
+  var immobiliersData = <%= @immobiliers.to_json.html_safe %>;
+</script>
+<script type="text/javascript">
+  google.charts.load('current', {packages:["orgchart"]});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Name');
+    data.addColumn('string', 'Manager');
+
+    // Ajouter le client comme racine
+    data.addRows([
+      [{v:'client_<%= @client.id %>', f:'<%= @client.nom %> <%= @client.prenom %>'}, '']
+    ]);
+
+    // Fonction récursive pour traiter les entreprises et leurs filiales
+    function addEntreprises(entreprises, parentId) {
+      entreprises.forEach(function(entreprise) {
+        var entrepriseId = 'entreprise_' + entreprise.id;
+        var parent = parentId ? 'entreprise_' + parentId : 'client_<%= @client.id %>';
+        var nomEntreprise = entreprise.nom;
+
+        // Formatage pour mettre le taux de détention au-dessus du nom de l'entreprise
+        var displayText = '<div>' + (entreprise.taux_detention ? '<strong>' + entreprise.taux_detention + '%</strong><br>' : '') + nomEntreprise + '</div>';
+        data.addRows([[{v: entrepriseId, f: displayText}, parent]]);
+
+        // Ajouter les filiales, le cas échéant
+        if (entreprise.filiales && entreprise.filiales.length > 0) {
+          addEntreprises(entreprise.filiales, entreprise.id);
+        }
+      });
+    }
+
+    // Ajouter les biens immobiliers
+     // Utiliser immobiliersData pour ajouter les biens immobiliers
+immobiliersData.forEach(function(immobilier) {
+  var proprietableId = immobilier.proprietable_type == 'Client' ? 'client_<%= @client.id %>' : 'entreprise_' + immobilier.proprietable_id;
+  var cellContent = '<div style="background-color: #f5f5dc; padding: 5px; border-radius: 5px;">' + immobilier.designation + ' </div>';
+
+  data.addRows([[{
+    v: 'immobilier_' + immobilier.id,
+    f: cellContent
+  }, proprietableId]]);
+});
+
+    // Appeler la fonction récursive avec les entreprises du client
+    addEntreprises(<%= @organigramme_data.to_json.html_safe %>);
+
+    // Options pour agrandir l'organigramme
+    var options = {
+      allowHtml: true,
+      size: 'large', // Agrandit la taille des boîtes et du texte
+      width: '100%',
+      height: 800 // Ajustez cette valeur pour changer la hauteur
+    };
+
+    var chart = new google.visualization.OrgChart(document.getElementById('organigramme'));
+    chart.draw(data, options);
+  }
+</script>
