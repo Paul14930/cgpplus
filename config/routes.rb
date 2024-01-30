@@ -18,13 +18,18 @@ Rails.application.routes.draw do
       end
     end
   end
+
   resources :entreprises do
+    member do
+      get :cession
+    end
     resources :immobiliers
   end
+
   resources :filiales do
     resources :immobiliers, only: [:destroy]
   end
 
 
-
 end
+

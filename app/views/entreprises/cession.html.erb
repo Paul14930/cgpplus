@@ -1,0 +1,44 @@
+<h1>Cession de la Filiale</h1>
+
+<div class="filiale-info">
+  <h2>Informations de la Filiale</h2>
+  <p><strong>Nom :</strong> <%= @entreprise.nom %></p>
+  <p><strong>Forme Juridique :</strong> <%= @entreprise.forme_juridique %></p>
+  <p><strong>Activité :</strong> <%= @entreprise.activite %></p>
+  <p><strong>Capital Social :</strong> <%= @entreprise.capital_social %></p>
+  <p><strong>Valeur Estimée :</strong> <%= @entreprise.valeur_estimee %></p>
+  <p><strong>Chiffre d'Affaires :</strong> <%= @entreprise.chiffre_affaires %></p>
+  <p><strong>Résultat Net :</strong> <%= @entreprise.resultat_net %></p>
+  <p><strong>Date de Création :</strong> <%= @entreprise.date_creation %></p>
+  <p><strong>Date d'Acquisition :</strong> <%= @entreprise.date_acquisition %></p>
+  <p><strong>Taux de Détention :</strong> <%= @entreprise.taux_detention %>%</p>
+</div>
+<div class="entreprise-mere-info">
+  <h2>Informations de l'Entreprise Mère</h2>
+  <p><strong>Nom:</strong> <%= @entreprise_mere.nom if @entreprise_mere.present? %></p>
+  <p><strong>Forme Juridique:</strong> <%= @entreprise_mere.forme_juridique if @entreprise_mere.present? %></p>
+  <p><strong>Activité:</strong> <%= @entreprise_mere.activite if @entreprise_mere.present? %></p>
+  <p><strong>Capital Social:</strong> <%= @entreprise_mere.capital_social if @entreprise_mere.present? %></p>
+  <p><strong>Valeur Estimée:</strong> <%= @entreprise_mere.valeur_estimee if @entreprise_mere.present? %></p>
+  <p><strong>Chiffre d'Affaires:</strong> <%= @entreprise_mere.chiffre_affaires if @entreprise_mere.present? %></p>
+  <p><strong>Résultat Net:</strong> <%= @entreprise_mere.resultat_net if @entreprise_mere.present? %></p>
+  <p><strong>Date de Création:</strong> <%= @entreprise_mere.date_creation if @entreprise_mere.present? %></p>
+  <p><strong>Date d'Acquisition:</strong> <%= @entreprise_mere.date_acquisition if @entreprise_mere.present? %></p>
+  <p><strong>Taux de Détention:</strong> <%= @entreprise_mere.taux_detention if @entreprise_mere.present? %>%</p>
+  <!-- Autres informations de l'entreprise mère -->
+</div>
+
+
+<h2>Si on ne fait rien </h2>
+<p>Valeur d'Acquisition Détenue: <%= @valeur_acquisition_detenue %> €</p>
+<p>Valeur de Cession Proportionnelle: <%= @valeur_cession_proportionnelle %> €</p>
+<p>Plus-value Taxable: <%= @plus_value_taxable %> €</p>
+<p>Taux Fiscalité Appliquée: <%= (@taux_fiscalite * 100).to_s + ' %' %></p>
+<p>Montant de la Taxe: <%= @montant_taxe %> €</p>
+
+
+<h2>on remonte le produit de cession dans la holding avec le régime mère fille </h2>
+<p> cout Remontée dans la Holding: <%= @remontee_dans_holding %> €</p>
+
+<h2>on distibue <%= @entreprise_mere.client.prenom %> <%= @entreprise_mere.client.nom %> le produit de la vente </h2>
+<p>Montant Distribuable Holding: <%= @montant_distribuable_holding %> €</p>

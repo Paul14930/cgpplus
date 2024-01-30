@@ -1,3 +1,5 @@
+<div class="container mx-auto p-6">
+
 <h1>Informations du Client</h1>
 
 <p>
@@ -70,8 +72,7 @@
 
 
 
-
-<h2>Biens immobiliers de <%= @client.nom %> <%= @client.prenom %></h2>
+<h2 class="text-4xl font-bold text-gray-800 mt-6 mb-4">Biens immobiliers de <%= @client.nom %> <%= @client.prenom %></h2>
 
 <table class="min-w-full table-auto">
   <thead class="justify-between">
@@ -121,13 +122,13 @@
           <%= immobilier.type_detention %>
         </td>
           <td>
-<%= form_with url: client_immobilier_path(@client, immobilier), method: :delete do %>
-  <%= submit_tag 'Supprimer', data: { turbo_confirm: 'Êtes-vous sûr ?', turbo_method: :delete }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' %>
-<% end %>
+<div class="flex items-center space-x-4">
+  <%= form_with url: client_immobilier_path(@client, immobilier), method: :delete do %>
+    <%= submit_tag 'Supprimer', data: { turbo_confirm: 'Êtes-vous sûr ?', turbo_method: :delete }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' %>
+  <% end %>
 
-<%= link_to 'Éditer', edit_client_immobilier_path(@client, immobilier), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
-
-
+  <%= link_to 'Éditer', edit_client_immobilier_path(@client, immobilier), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
+</div>
 
     </td>
       </tr>
@@ -135,84 +136,124 @@
   </tbody>
 </table>
 
-<h2>Entreprises de <%= @client.nom %> <%= @client.prenom %></h2>
+<h2 class="text-4xl font-bold text-gray-800 mt-6 mb-4">
+  Entreprises de <%= @client.nom %> <%= @client.prenom %>
+</h2>
 
-<table class="min-w-full leading-normal">
-  <thead>
+<table class="min-w-full leading-normal shadow-md rounded-lg overflow-hidden">
+  <thead class="bg-gray-800 text-white">
     <tr>
-      <th>Nom</th>
-      <th>Forme Juridique</th>
-      <th>Activité</th>
-      <th>Capital Social</th>
-      <th>Valeur Estimée</th>
-      <th>Date de Création</th>
-      <th>Date d'Acquisition</th>
-      <th>Taux de Détention</th>
-      <th>Actions</th>
+      <th class="py-3 px-6">Nom</th>
+      <th class="py-3 px-6">Forme Juridique</th>
+      <th class="py-3 px-6">Activité</th>
+      <th class="py-3 px-6">Capital Social</th>
+      <th class="py-3 px-6">Valeur Estimée</th>
+      <th class="py-3 px-6">Date de Création</th>
+      <th class="py-3 px-6">Date d'Acquisition</th>
+      <th class="py-3 px-6">Taux de Détention</th>
+      <th class="py-3 px-6">Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @entreprises.where(entreprise_mere_id: nil).each do |entreprise| %>
-      <tr>
-        <td><%= entreprise.nom %></td>
-        <td><%= entreprise.forme_juridique %></td>
-        <td><%= entreprise.activite %></td>
-        <td><%= entreprise.capital_social %></td>
-        <td><%= entreprise.valeur_estimee %> € </td>
-        <td><%= entreprise.date_creation %></td>
-        <td><%= entreprise.date_acquisition %></td>
-        <td><%= entreprise.taux_detention %>%</td>
-        <td>
-          <%= link_to 'Éditer', edit_cgp_client_entreprise_path(@cgp, @client, entreprise) %>
-          <%= link_to 'Ajouter une filiale', new_cgp_client_entreprise_path(@cgp, @client, entreprise_mere_id: entreprise.id) %>
-      <%= link_to 'Ajouter un bien immobilier pour l\'entreprise', new_client_immobilier_path(client_id: @client.id, proprietable_type: 'Entreprise', proprietable_id: entreprise.id) %>
+      <tr class="bg-white border-b border-gray-200">
+        <td class="py-4 px-6"><%= entreprise.nom %></td>
+        <td class="py-4 px-6"><%= entreprise.forme_juridique %></td>
+        <td class="py-4 px-6"><%= entreprise.activite %></td>
+        <td class="py-4 px-6"><%= entreprise.capital_social %></td>
+        <td class="py-4 px-6"><%= entreprise.valeur_estimee %></td>
+        <td class="py-4 px-6"><%= entreprise.date_creation %></td>
+        <td class="py-4 px-6"><%= entreprise.date_acquisition %></td>
+        <td class="py-4 px-6"><%= entreprise.taux_detention %>%</td>
+    <td class="py-4 px-6 text-right">
+  <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+    <%= link_to 'Éditer', edit_cgp_client_entreprise_path(@cgp, @client, entreprise), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out' %>
+    <%= link_to '+filiale', new_cgp_client_entreprise_path(@cgp, @client, entreprise_mere_id: entreprise.id), class: 'bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out' %>
+    <%= link_to '+immobilier', new_client_immobilier_path(client_id: @client.id, proprietable_type: 'Entreprise', proprietable_id: entreprise.id), class: 'bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out' %>
+  </div>
+</td>
 
-        </td>
       </tr>
-      <% if entreprise.immobiliers.any? %>
+ <% if entreprise.immobiliers.any? %>
   <% entreprise.immobiliers.each do |immobilier| %>
     <tr class="bg-blue-100">
-       <td colspan="8">
-      Bien Immobilier: <%= immobilier.designation %>, Valeur: <%= immobilier.valeur_actuelle %> €
-      <%= form_with url: entreprise_immobilier_path(entreprise, immobilier), method: :delete do %>
-        <%= submit_tag 'Supprimer', data: { confirm: 'Êtes-vous sûr ?', turbo: false }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' %>
-      <% end %>
-    </td>
-  </tr>
+      <td colspan="8">
+
+        <table class="min-w-full">
+          <tr>
+            <td>Designation: <%= immobilier.designation %></td>
+            <td>Date Acquisition: <%= immobilier.date_acquisition %></td>
+            <td>Valeur Acquisition: <%= immobilier.valeur_acquisition %>€</td>
+            <td>Taux Détention: <%= immobilier.taux_detention %>%</td>
+            <td>Type Détention: <%= immobilier.type_detention %></td>
+            <td>Valeur Actuelle: <%= immobilier.valeur_actuelle %>€</td>
+          </tr>
+        </table>
+      </td>
+      <td class="text-right">
+        <div class="flex justify-end items-center space-x-2">
+          <%= link_to 'Éditer', edit_client_immobilier_path(client_id: @client.id, id: immobilier.id), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
+          <%= form_with url: entreprise_immobilier_path(entreprise, immobilier), method: :delete do %>
+            <%= submit_tag 'Supprimer', data: { confirm: 'Êtes-vous sûr ?', turbo: false }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' %>
+          <% end %>
+        </div>
+      </td>
+    </tr>
   <% end %>
 <% end %>
+
       <% entreprise.filiales.each do |filiale| %>
         <tr class="bg-gray-100">
-           <td>
-    <%= filiale.nom %> (Filiale de <%= filiale.entreprise_mere.nom %>)
-  </td>
-          <td><%= filiale.forme_juridique %></td>
-          <td><%= filiale.activite %></td>
-          <td><%= filiale.capital_social %></td>
-          <td><%= filiale.valeur_estimee %> €</td>
-          <td><%= filiale.date_creation %></td>
-          <td><%= filiale.date_acquisition %></td>
-          <td><%= filiale.taux_detention %>%</td>
-          <td>
-            <%= link_to 'Éditer', edit_cgp_client_entreprise_path(@cgp, @client, filiale) %>
+    <td class="py-3 px-6">Filiale <%= filiale.nom %></td>
+    <td class="py-3 px-6"><%= filiale.forme_juridique %></td>
+    <td class="py-3 px-6"><%= filiale.activite %></td>
+    <td class="py-3 px-6"><%= filiale.capital_social %></td>
+    <td class="py-3 px-6"><%= filiale.valeur_estimee %> €</td>
+    <td class="py-3 px-6"><%= filiale.date_creation %></td>
+    <td class="py-3 px-6"><%= filiale.date_acquisition %></td>
+    <td class="py-3 px-6"><%= filiale.taux_detention %>%</td>
+<td class="py-3 px-6 text-right">
+  <div class="flex space-x-2">
+    <%= link_to 'Éditer', edit_cgp_client_entreprise_path(@cgp, @client, filiale), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out' %>
+    <%= link_to '+ bien immobilier', new_client_immobilier_path(client_id: @client.id, proprietable_type: 'Entreprise', proprietable_id: filiale.id), class: 'bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded ml-2 transition duration-300 ease-in-out' %>
+    <%= link_to 'Cession', cession_entreprise_path(filiale), class: 'bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded' %>
+  </div>
+</td>
 
-            <%= link_to 'Ajouter un bien immobilier pour la filiale', new_client_immobilier_path(client_id: @client.id, proprietable_type: 'Entreprise', proprietable_id: filiale.id) %>
-
-          </td>
-        </tr>
-         <% if filiale.immobiliers.any? %>
-   <% filiale.immobiliers.each do |immobilier| %>
-  <tr class="bg-green-100">
-    <td colspan="8">
-      Bien Immobilier de la filiale: <%= immobilier.designation %>, Valeur: <%= immobilier.valeur_actuelle %> €
-      <%= form_with url: filiale_immobilier_path(filiale, immobilier), method: :delete do %>
-        <%= submit_tag 'Supprimer', data: { confirm: 'Êtes-vous sûr ?', turbo: false }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' %>
-      <% end %>
-    </td>
   </tr>
-    <% end %>
+<% if filiale.immobiliers.any? %>
+  <% filiale.immobiliers.each do |immobilier_filiale| %>
+    <tr class="bg-green-100">
+      <td colspan="8" class="py-2 px-4">
+        <table class="min-w-full">
+          <tbody>
+            <tr>
+              <td>Designation: <%= immobilier_filiale.designation %></td>
+              <td>Date Acquisition: <%= immobilier_filiale.date_acquisition %></td>
+              <td>Valeur Acquisition: <%= immobilier_filiale.valeur_acquisition %>€</td>
+              <td>Taux Détention: <%= immobilier_filiale.taux_detention %>%</td>
+              <td>Type Détention: <%= immobilier_filiale.type_detention %></td>
+              <td>Valeur Actuelle: <%= immobilier_filiale.valeur_actuelle %>€</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+      <td class="py-2 px-4 text-right">
+        <div class="flex justify-end items-center space-x-2">
+          <%= link_to 'Éditer', edit_client_immobilier_path(client_id: @client.id, id: immobilier_filiale.id), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
+          <%= form_with url: entreprise_immobilier_path(filiale, immobilier_filiale), method: :delete do %>
+            <%= submit_tag 'Supprimer', data: { confirm: 'Êtes-vous sûr ?', turbo: false }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' %>
+          <% end %>
+        </div>
+      </td>
+    </tr>
   <% end %>
+<% end %>
+
       <% end %>
     <% end %>
   </tbody>
 </table>
+</div>
+
+
