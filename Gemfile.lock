@@ -101,6 +101,10 @@ GEM
       activesupport (>= 6.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    importmap-rails (2.0.1)
+      actionpack (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      railties (>= 6.0.0)
     io-console (0.7.2)
     irb (1.11.1)
       rdoc
@@ -108,8 +112,6 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
-    jsbundling-rails (1.3.0)
-      railties (>= 6.0.0)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -268,8 +270,8 @@ DEPENDENCIES
   cssbundling-rails
   debug
   devise
+  importmap-rails
   jbuilder
-  jsbundling-rails
   puma (~> 5.0)
   rails (~> 7.0.6)
   selenium-webdriver
