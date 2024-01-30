@@ -22,6 +22,13 @@ class ImmobiliersController < ApplicationController
     end
   end
 
+  def destroy
+    @immobilier = Immobilier.find(params[:id])
+    client = @immobilier.proprietable_type == 'Client' ? @immobilier.proprietable : @immobilier.proprietable.client
+    @immobilier.destroy
+    redirect_to client_path(client), notice: 'Bien immobilier supprimé avec succès.'
+  end
+
 
 
 
@@ -29,6 +36,7 @@ class ImmobiliersController < ApplicationController
   private
 
   def immobilier_params
-    params.require(:immobilier).permit(:designation, :date_acquisition, :valeur_acquisition, :taux_detention, :valeur_actuelle, :type_detention)
+    params.require(:immobilier).permit(:designation, :date_acquisition, :valeur_acquisition, :taux_detention, :valeur_actuelle, :type_detention, :proprietable_type, :proprietable_id)
   end
+
 end
