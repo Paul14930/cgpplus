@@ -12,6 +12,22 @@ class ClientsController < ApplicationController
     # Nouvelle variable pour l'organigramme
     @organigramme_data = prepare_organigramme_data(@client.entreprises)
     @immobiliers = @client.immobiliers + Immobilier.where(proprietable: @client.entreprises)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        @image_uri = params[:image_uri]
+        if @image_uri.blank?
+          Rails.logger.debug "Image URI is missing"
+        end
+        render pdf: "Rapport_Client",
+               template: "clients/rapport_pdf", # Assurez-vous que ce fichier existe
+               layout: false, # Pas de layout ou spécifiez un layout si nécessaire
+               formats: [:html], # Spécifiez le format du template
+               encoding: 'UTF-8'
+      end
+    end
+
   end
 
   def new

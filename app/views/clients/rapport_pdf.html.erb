@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rapport Client</title>
+  <!-- Styles supplémentaires ici si nécessaire -->
+</head>
+<body>
+  <h1>Rapport pour <%= @client.nom %> <%= @client.prenom %></h1>
+
+  <!-- Assurez-vous que @image_uri est défini et non vide -->
+  <% if @image_uri.present? %>
+  <img src="<%= @image_uri %>" alt="Organigramme" style="width: 100%; height: auto;">
+<% else %>
+  <p>L'image de l'organigramme n'est pas disponible.</p>
+<% end %>
+
+
+  <!-- Autres contenus de votre rapport ici -->
+</body>
+</html>

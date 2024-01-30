@@ -258,6 +258,7 @@
 </div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 
 <script type="text/javascript">
   var immobiliersData = <%= @immobiliers.to_json.html_safe %>;
@@ -318,6 +319,39 @@ immobiliersData.forEach(function(immobilier) {
     };
 
     var chart = new google.visualization.OrgChart(document.getElementById('organigramme'));
-    chart.draw(data, options);
+
+// Attacher l'événement 'ready' avant de dessiner le graphique
+google.visualization.events.addListener(chart, 'ready', function () {
+  console.log("Organigramme prêt pour la capture");
+
+  // Définir un délai pour s'assurer que le graphique est complètement rendu
+ setTimeout(function() {
+  var organigrammeElement = document.getElementById("organigramme");
+  organigrammeElement.style.width = '2000px'; // Augmenter la largeur
+  organigrammeElement.style.height = '2000px'; // Augmenter la hauteur
+
+  html2canvas(organigrammeElement).then(canvas => {
+    var imgUri = canvas.toDataURL("image/png");
+    document.getElementById('image_uri_field').value = imgUri;
+  });
+
+  // Remettre la taille originale après la capture
+  organigrammeElement.style.width = '';
+  organigrammeElement.style.height = '';
+}, 1000); // Un délai de 1000 millisecondes
+});
+
+// Dessiner le graphique
+chart.draw(data, options);
+
+
   }
 </script>
+
+<%= form_with url: cgp_client_path(@cgp, @client, format: :pdf), method: :post do |form| %>
+  <%= form.hidden_field :image_uri, id: 'image_uri_field' %>
+  <%= form.submit 'Générer le PDF' %>
+<% end %>
+
+<!-- Temporairement pour le débogage -->
+<div>Image URI: <%= params[:image_uri] %></div>

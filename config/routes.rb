@@ -9,10 +9,14 @@ Rails.application.routes.draw do
   resources :clients do
     resources :entreprises
     resources :immobiliers
+    member do
+      post :show, defaults: { format: :pdf }
+    end
   end
 
   resources :cgps, only: [:show, :index] do
     resources :clients do
+      post :show, on: :member, defaults: { format: :pdf }
       resources :entreprises do
         resources :immobiliers
       end
@@ -32,4 +36,3 @@ Rails.application.routes.draw do
 
 
 end
-
