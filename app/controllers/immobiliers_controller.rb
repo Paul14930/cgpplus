@@ -29,7 +29,22 @@ class ImmobiliersController < ApplicationController
     redirect_to client_path(client), notice: 'Bien immobilier supprimé avec succès.'
   end
 
+  def edit
+    @client = Client.find(params[:client_id])
+    @immobilier = Immobilier.find(params[:id])
+  end
 
+def update
+  @immobilier = Immobilier.find(params[:id])
+
+  if @immobilier.update(immobilier_params)
+    # Redirige vers la page du client associé
+    client = @immobilier.proprietable_type == 'Client' ? @immobilier.proprietable : @immobilier.proprietable.client
+    redirect_to client_path(client), notice: 'Bien immobilier mis à jour avec succès.'
+  else
+    render :edit
+  end
+end
 
 
 

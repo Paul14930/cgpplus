@@ -1,4 +1,4 @@
-<%= form_with(model: @immobilier, url: client_immobiliers_path(client_id: params[:client_id], proprietable_type: params[:proprietable_type], proprietable_id: params[:proprietable_id]), local: true) do |form| %>
+<%= form_with(model: [@client, @immobilier], local: true) do |form| %>
   <% if @immobilier.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@immobilier.errors.count, "error") %> prevented this immobilier from being saved:</h2>
@@ -16,9 +16,8 @@
   </div>
 
   <div class="field">
-   <%= form.label :date_acquisition %>
-<%= form.date_select :date_acquisition, start_year: 1960, end_year: Date.today.year %>
-
+    <%= form.label :date_acquisition %>
+    <%= form.date_select :date_acquisition, start_year: 1960 %>
   </div>
 
   <div class="field">
@@ -41,5 +40,5 @@
     <%= form.select :type_detention, ['Pleine propriété', 'Nue-propriété', 'Usufruit'], { include_blank: 'Sélectionnez le type de détention' } %>
   </div>
 
-  <%= form.submit 'Enregistrer le bien immobilier' %>
+  <%= form.submit 'Enregistrer les modifications' %>
 <% end %>

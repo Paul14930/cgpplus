@@ -64,9 +64,10 @@
   <strong>Ville :</strong>
   <%= @client.ville %>
 </p>
-<%= link_to 'Ajouter une entreprise', new_cgp_client_entreprise_path(@cgp, @client) %>
+<%= link_to 'Ajouter une entreprise', new_cgp_client_entreprise_path(@cgp, @client), class: 'inline-block px-6 py-2 text-white font-bold bg-green-500 hover:bg-green-700 rounded' %>
 
-<%= link_to 'Ajouter un bien immobilier pour le client', new_client_immobilier_path(@client), class: 'btn btn-primary' %>
+<%= link_to 'Ajouter un bien immobilier pour le client', new_client_immobilier_path(@client), class: 'inline-block px-6 py-2 text-white font-bold bg-orange-500 hover:bg-orange-700 rounded' %>
+
 
 
 
@@ -124,6 +125,7 @@
   <%= submit_tag 'Supprimer', data: { turbo_confirm: 'Êtes-vous sûr ?', turbo_method: :delete }, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' %>
 <% end %>
 
+<%= link_to 'Éditer', edit_client_immobilier_path(@client, immobilier), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
 
 
 
@@ -214,10 +216,3 @@
     <% end %>
   </tbody>
 </table>
-
-
-
-
-<!-- Lien pour éditer et retourner à l'index des clients -->
-<%= link_to 'Modifier', edit_client_path(@client) %> |
-<%= link_to 'Retour à la liste', clients_path %>

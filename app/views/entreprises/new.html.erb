@@ -36,12 +36,13 @@
 
   <%= form.label :resultat_net %>
   <%= form.number_field :resultat_net %>
+  
+<%= form.label :date_creation %>
+<%= form.date_select :date_creation, start_year: 1960, end_year: Date.today.year %>
 
-  <%= form.label :date_creation %>
-  <%= form.date_select :date_creation %>
+<%= form.label :date_acquisition %>
+<%= form.date_select :date_acquisition, start_year: 1960, end_year: Date.today.year %>
 
-  <%= form.label :date_acquisition %>
-  <%= form.date_select :date_acquisition %>
 
  <%= form.label :taux_detention %>
   <%= form.number_field :taux_detention %>
